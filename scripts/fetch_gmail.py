@@ -130,7 +130,7 @@ def message_to_item(service, message_id):
 def main():
     query = os.environ.get(
         "GMAIL_QUERY",
-        'from:tldr OR from:info@tldr.tech OR subject:"TLDR"',
+        "from:dan@tldrnewsletter.com",
     )
     limit = int(os.environ.get("GMAIL_LIMIT", "40"))
     output_path = os.environ.get("OUTPUT_PATH", "tldr.json")
