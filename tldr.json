@@ -1,0 +1,13 @@
+{
+  "updated_at": "2024-01-01T08:00:00Z",
+  "items": [
+    {
+      "id": "sample-1",
+      "title": "Sample TLDR tile",
+      "summary": "This is a placeholder. Your Gmail sync will replace it with real TLDR emails.",
+      "theme": "Getting Started",
+      "date": "2024-01-01T08:00:00Z",
+      "source": "TLDR"
+    }
+  ]
+}

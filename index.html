@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TLDR Tiles</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">Daily TLDR Digest</p>
+        <h1>Signal, sorted by theme.</h1>
+        <p class="lede">Fresh TLDR emails become compact tiles. Read once, archive instantly.</p>
+        <div class="hero__actions">
+          <button id="refreshButton" class="button">Refresh</button>
+          <button id="toggleArchived" class="button button--ghost">Show archived</button>
+        </div>
+      </div>
+      <div class="hero__meta">
+        <div class="stat">
+          <span class="stat__label">Last updated</span>
+          <span id="lastUpdated" class="stat__value">—</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Unread tiles</span>
+          <span id="unreadCount" class="stat__value">—</span>
+        </div>
+      </div>
+    </header>
+
+    <section id="themes" class="themes" aria-live="polite"></section>
+  </main>
+
+  <template id="themeTemplate">
+    <section class="theme">
+      <div class="theme__header">
+        <h2 class="theme__title"></h2>
+        <span class="theme__count"></span>
+      </div>
+      <div class="theme__grid"></div>
+    </section>
+  </template>
+
+  <template id="tileTemplate">
+    <article class="tile">
+      <div class="tile__meta">
+        <span class="tile__date"></span>
+        <span class="tile__tag"></span>
+      </div>
+      <h3 class="tile__title"></h3>
+      <p class="tile__summary"></p>
+      <button class="tile__action">Mark as read</button>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
