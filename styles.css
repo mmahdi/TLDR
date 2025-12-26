@@ -155,12 +155,12 @@ body {
 .theme__grid {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .tile {
   position: relative;
-  padding: 18px;
+  padding: 22px;
   border-radius: 20px;
   background: #fff;
   border: 1px solid var(--line);
@@ -168,7 +168,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 210px;
+  min-height: 260px;
+  min-width: 0;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(12px);
   animation: rise 0.6s ease forwards;
@@ -203,6 +205,9 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: calc(1.3em * 3);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .tile__summary {
@@ -213,21 +218,52 @@ body {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: calc(1.5em * 4);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.tile__action {
+.tile__actions {
   margin-top: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.tile__action,
+.tile__like {
   border: none;
-  background: #111827;
-  color: #fff;
   border-radius: 12px;
   padding: 8px 12px;
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.tile__action {
+  background: #111827;
+  color: #fff;
+  flex: 1;
 }
 
 .tile__action:hover {
   background: var(--accent);
+  transform: translateY(-1px);
+}
+
+.tile__like {
+  background: rgba(15, 91, 255, 0.12);
+  color: var(--accent);
+  min-width: 70px;
+}
+
+.tile__like:hover {
+  background: rgba(15, 91, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.tile--liked .tile__like {
+  background: var(--accent);
+  color: #fff;
 }
 
 .tile--archived {

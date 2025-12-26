@@ -11,7 +11,7 @@
     <header class="hero">
       <div class="hero__copy">
         <p class="eyebrow">Daily TLDR Digest</p>
-        <h1>Signal, sorted by theme.</h1>
+        <h1>TLDR, today recap.</h1>
         <p class="lede">Fresh TLDR emails become compact tiles. Read once, archive instantly.</p>
         <div class="hero__actions">
           <button id="refreshButton" class="button">Refresh</button>
@@ -51,7 +51,10 @@
       </div>
       <h3 class="tile__title"></h3>
       <p class="tile__summary"></p>
-      <button class="tile__action">Mark as read</button>
+      <div class="tile__actions">
+        <button class="tile__like" type="button">Like</button>
+        <button class="tile__action" type="button">Mark as read</button>
+      </div>
     </article>
   </template>
 

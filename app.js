@@ -1,5 +1,6 @@
 const DATA_URL = "tldr.json";
 const STORAGE_KEY = "tldr-read-ids";
+const LIKED_KEY = "tldr-liked-ids";
 
 const themesEl = document.getElementById("themes");
 const lastUpdatedEl = document.getElementById("lastUpdated");
@@ -19,8 +20,20 @@ const loadReadIds = () => {
   }
 };
 
+const loadLikedIds = () => {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(LIKED_KEY) || "[]"));
+  } catch (error) {
+    return new Set();
+  }
+};
+
 const saveReadIds = (readIds) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(readIds)));
+};
+
+const saveLikedIds = (likedIds) => {
+  localStorage.setItem(LIKED_KEY, JSON.stringify(Array.from(likedIds)));
 };
 
 const formatDate = (value) => {
@@ -34,6 +47,18 @@ const formatDate = (value) => {
   });
 };
 
+const THEME_ORDER = [
+  "Big Tech",
+  "Startups",
+  "AI",
+  "Science",
+  "World",
+  "Business",
+  "Tools",
+  "Misc",
+  "Quick Links",
+];
+
 const groupByTheme = (items) => {
   const map = new Map();
   items.forEach((item) => {
@@ -46,6 +71,7 @@ const groupByTheme = (items) => {
 
 const render = (data) => {
   const readIds = loadReadIds();
+  const likedIds = loadLikedIds();
   const items = data.items || [];
   const unreadCount = items.filter((item) => !readIds.has(item.id)).length;
 
@@ -53,7 +79,14 @@ const render = (data) => {
   unreadCountEl.textContent = `${unreadCount}`;
   lastUpdatedEl.textContent = data.updated_at ? formatDate(data.updated_at) : "—";
 
-  const grouped = groupByTheme(items).sort((a, b) => b[1].length - a[1].length);
+  const grouped = groupByTheme(items).sort((a, b) => {
+    const aIndex = THEME_ORDER.indexOf(a[0]);
+    const bIndex = THEME_ORDER.indexOf(b[0]);
+    if (aIndex === -1 && bIndex === -1) return b[1].length - a[1].length;
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  });
 
   if (grouped.length === 0) {
     themesEl.innerHTML = "<p>No TLDR emails yet. Check back tomorrow.</p>";
@@ -77,6 +110,7 @@ const render = (data) => {
       const titleEl = tileNode.querySelector(".tile__title");
       const summary = tileNode.querySelector(".tile__summary");
       const button = tileNode.querySelector(".tile__action");
+      const likeButton = tileNode.querySelector(".tile__like");
 
       tile.style.animationDelay = `${(themeIndex + index) * 0.03}s`;
       date.textContent = formatDate(item.date);
@@ -85,14 +119,29 @@ const render = (data) => {
       summary.textContent = item.summary || "";
 
       const isRead = readIds.has(item.id);
+      const isLiked = likedIds.has(item.id);
       if (isRead) {
         tile.classList.add("tile--archived");
         button.textContent = "Archived";
+      }
+      if (isLiked) {
+        tile.classList.add("tile--liked");
+        likeButton.textContent = "Liked";
       }
 
       button.addEventListener("click", () => {
         readIds.add(item.id);
         saveReadIds(readIds);
+        render(data);
+      });
+
+      likeButton.addEventListener("click", () => {
+        if (likedIds.has(item.id)) {
+          likedIds.delete(item.id);
+        } else {
+          likedIds.add(item.id);
+        }
+        saveLikedIds(likedIds);
         render(data);
       });
 
